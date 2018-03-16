@@ -12,14 +12,18 @@
 #
 # Creates multi node hadoop cluster on Docker
 
-FROM sequenceiq/pam:ubuntu-14.04
-MAINTAINER lewuathe
+# Operating System
+FROM ubuntu:14.04
 
+# Maintainer
+MAINTAINER Tu Mai Anh Do <tudo@isi.edu>
+
+# User 
 USER root
 
 # install dev tools
 RUN apt-get update
-RUN apt-get install -y curl tar sudo openssh-server openssh-client rsync
+RUN apt-get install -y curl tar sudo openssh-server openssh-client rsync git
 
 # passwordless ssh
 RUN rm -f /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_rsa_key /root/.ssh/id_rsa
@@ -43,7 +47,7 @@ ENV PATH $PATH:$JAVA_HOME/bin
 RUN mkdir -p /tmp/native
 RUN curl -Ls http://dl.bintray.com/sequenceiq/sequenceiq-bin/hadoop-native-64-2.7.0.tar | tar -x -C /tmp/native
 
-ENV HADOOP_VERSION=3.2.0-SNAPSHOT
+ENV HADOOP_VERSION=3.0.0
 ADD hadoop-${HADOOP_VERSION}.tar.gz /usr/local/
 WORKDIR /usr/local
 RUN ln -s /usr/local/hadoop-${HADOOP_VERSION} /usr/local/hadoop
@@ -92,6 +96,7 @@ RUN sed  -i "/^[^#]*UsePAM/ s/.*/#&/"  /etc/ssh/sshd_config
 RUN echo "UsePAM no" >> /etc/ssh/sshd_config
 RUN echo "Port 2122" >> /etc/ssh/sshd_config
 
+# Start sshd service
 RUN service ssh start
 
 # Hdfs ports
@@ -104,3 +109,18 @@ EXPOSE 19888
 EXPOSE 8030 8031 8032 8033 8040 8042 8088 8188
 #Other ports
 EXPOSE 49707 2122
+
+# install maven
+RUN apt-get install -y maven
+
+# Add HiBench to docker image
+ENV HIBENCH_HOME /root/HiBench
+
+# download right version of HiBench
+RUN git clone https://github.com/intel-hadoop/HiBench.git ${HIBENCH_HOME}
+COPY hadoop.conf ${HIBENCH_HOME}/conf/
+
+# start building HiBench
+RUN cd ${HIBENCH_HOME} && \
+mvn clean package -Phadoopbench
+

@@ -1,7 +1,10 @@
+base:
+	docker build -t tudo/clos-ssd:base hadoop-base
+
 all:
-	docker build -t lewuathe/hadoop-base:latest hadoop-base
-	docker build -t lewuathe/hadoop-master:latest hadoop-master
-	docker build -t lewuathe/hadoop-slave:latest hadoop-slave
+	#docker build -t tudo/clos-ssd:base hadoop-base
+	docker build -t tudo/clos-ssd:master hadoop-master
+	docker build -t tudo/clos-ssd:slave hadoop-slave
 	docker-compose build
 
 .PHONY: test clean

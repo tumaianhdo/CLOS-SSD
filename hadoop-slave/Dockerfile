@@ -12,8 +12,11 @@
 #
 # Creates multi node hadoop cluster on Docker
 
-FROM lewuathe/hadoop-base:latest
-MAINTAINER lewuathe
+# Docker base image
+FROM tudo/clos-ssd:base
+
+# Maintainer
+MAINTAINER Tu Mai Anh Do <tudo@isi.edu>
 
 ADD bootstrap.sh /etc/bootstrap.sh
 RUN chown root:root /etc/bootstrap.sh
