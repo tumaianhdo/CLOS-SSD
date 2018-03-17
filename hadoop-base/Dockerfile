@@ -122,5 +122,5 @@ COPY hadoop.conf ${HIBENCH_HOME}/conf/
 
 # start building HiBench
 RUN cd ${HIBENCH_HOME} && \
-mvn clean package -Phadoopbench
+mvn clean package -Phadoopbench -DskipTests
 
