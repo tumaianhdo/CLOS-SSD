@@ -68,6 +68,12 @@
       <value>true</value>
     </property>
 
+    <property>
+      <name>yarn.nodemanager.vmem-check-enabled</name>
+      <value>false</value>
+      <description>Whether virtual memory limits will be enforced for containers</description>
+    </property>
+
     <!-- NAMENODE must be same to RESOURCEMANAGER in this configuration -->
     <!-- Disable due to HDFS initialization timing issue
     <property>
