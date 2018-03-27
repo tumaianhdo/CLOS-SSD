@@ -1,5 +1,5 @@
 # Operating System
-FROM ubuntu:14.04
+FROM ubuntu:latest
 
 # Maintainer
 MAINTAINER Tu Mai Anh Do <tudo@isi.edu>
@@ -9,7 +9,7 @@ USER root
 
 # install dev tools
 RUN apt-get update
-RUN apt-get install -y curl tar sudo openssh-server openssh-client rsync git vim
+RUN apt-get install -y curl tar sudo openssh-server openssh-client rsync git vim python
 
 # passwordless ssh
 RUN rm -f /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_rsa_key /root/.ssh/id_rsa
@@ -100,13 +100,13 @@ EXPOSE 49707 2122
 RUN apt-get install -y maven
 
 # Add HiBench to docker image
-ENV HIBENCH_HOME /root/HiBench
+#ENV HIBENCH_HOME /root/HiBench
 
 # download right version of HiBench
-RUN git clone https://github.com/intel-hadoop/HiBench.git ${HIBENCH_HOME}
-COPY hadoop.conf ${HIBENCH_HOME}/conf/
+#RUN git clone https://github.com/intel-hadoop/HiBench.git ${HIBENCH_HOME}
+#COPY hadoop.conf ${HIBENCH_HOME}/conf/
 
 # start building HiBench
-RUN cd ${HIBENCH_HOME} && \
-mvn clean package -Phadoopbench -DskipTests
+#RUN cd ${HIBENCH_HOME} && \
+#mvn clean package -Phadoopbench -DskipTests
 
