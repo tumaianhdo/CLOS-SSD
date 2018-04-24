@@ -1,0 +1,21 @@
+MASTER:
+docker swarm init
+docker network create --driver=overlay --attachable clos-net
+docker run -dit -p 50070:50070 -p 8080:8088 -p 19888:19888 -p 8188:8188 --name master --hostname master --network clos-net tudo/clos-ssd:master
+docker run -dit -p 50070:50070 -p 8080:8088 -p 19888:19888 -p 8188:8188 --name master --hostname master --mount type=bind,source=/hdd/data,target=/tmp/hadoop-root/dfs/name --network clos-net tudo/clos-ssd:master
+
+
+SLAVE:
+docker swarm join
+docker run -dit -p 50075:50075 -p 8042:8042 --name slave --hostname slave --network clos-net tudo/clos-ssd:slave
+docker run -dit -p 50075:50075 -p 8042:8042 --name slave --hostname slave --mount type=bind,source=/hdd/data,target=/tmp/hadoop-root/dfs/data --network clos-net tudo/clos-ssd:slave
+
+
+docker run -dit -p 50075:50075 -p 8042:8042 --name slave1 --hostname slave1 --network clos-net tudo/clos-ssd:slave
+docker run -dit -p 50075:50075 -p 8042:8042 --name slave2 --hostname slave2 --network clos-net tudo/clos-ssd:slave
+
+docker run -dit -p 50070:50070 -p 8080:8080 -p 19888:19888 -p 8188:8188 --name master --hostname master --cpus=12 -m 22000M --network clos-net tudo/clos-ssd:master
+
+
+
+UUID=3950d458-61c3-4f55-88af-02301010f2d4       /hdd   ext4    defaults,nofail        0       2

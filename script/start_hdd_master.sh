@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -dit -p 50070:50070 -p 8080:8080 -p 19888:19888 -p 8188:8188 --name master --hostname master --mount type=bind,source=/hdd/data,target=/tmp/hadoop-root/dfs/name --network clos-net tudo/clos-ssd:master

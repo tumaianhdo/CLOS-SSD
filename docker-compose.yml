@@ -1,23 +1,26 @@
-version: '2'
+version: '3.2'
 
 services:
   master:
-    build: ./hadoop-master
+    image: tudo/clos-ssd:master
+    hostname: "master"
+    container_name: "master"
     ports:
-      - "9870:9870"
+      - "50070:50070"
       - "8088:8088"
       - "19888:19888"
       - "8188:8188"
-    container_name: "master"
   slave1:
-    build: ./hadoop-slave
+    image: tudo/clos-ssd:slave
+    hostname: "slave1"
     container_name: "slave1"
     ports:
-      - "9901:9864"
-      - "8041:8042"
+      - "50075:50075"
+      - "8042:8042"
   slave2:
-    build: ./hadoop-slave
+    image: tudo/clos-ssd:slave-nodata
+    hostname: "slave2"
     container_name: "slave2"
     ports:
-      - "9902:9864"
-      - "8042:8042"
+      - "50076:50075"
+      - "8043:8042"
